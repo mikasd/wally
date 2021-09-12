@@ -1,10 +1,14 @@
-use secp256k1::{
-    PublicKey,
-    SecretKey,
-    rand::{rngs, SeedableRng}
-};
 use anyhow::Result;
-use web3::{self, Web3, transports::Http, types::{H160, H256, TransactionParameters, U256}};
+use secp256k1::{
+    rand::{rngs, SeedableRng},
+    PublicKey, SecretKey,
+};
+use web3::{
+    self,
+    transports::Http,
+    types::{TransactionParameters, H160, H256, U256},
+    Web3,
+};
 
 pub fn create_keypair() -> Result<(SecretKey, PublicKey)> {
     let secp = secp256k1::Secp256k1::new();
@@ -17,15 +21,22 @@ pub fn setup_web3_connection(url: &str) -> Result<Web3<Http>> {
     Ok(web3::Web3::new(transport))
 }
 
-pub fn create_txn_object( to: H160, value: usize) -> Result<TransactionParameters> {
-    Ok(TransactionParameters{
+pub fn create_txn_object(to: H160, value: usize) -> Result<TransactionParameters> {
+    Ok(TransactionParameters {
         to: Some(to),
         value: U256::exp10(value),
-        ..Default::default() 
+        ..Default::default()
     })
 }
 
-pub async fn sign_and_send(web3: Web3<Http>, tx_object: TransactionParameters, seckey: SecretKey) -> Result<H256> {
+pub async fn sign_and_send(
+    web3: Web3<Http>,
+    tx_object: TransactionParameters,
+    seckey: SecretKey,
+) -> Result<H256> {
     let signed = web3.accounts().sign_transaction(tx_object, &seckey).await?;
-    Ok(web3.eth().send_raw_transaction(signed.raw_transaction).await?)
+    Ok(web3
+        .eth()
+        .send_raw_transaction(signed.raw_transaction)
+        .await?)
 }

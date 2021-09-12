@@ -82,7 +82,7 @@ async fn main() -> Result<()> {
                     };
                     keypairs.push((pubkey, seckey));
                     frame.set_label(&format!("{} Wallets", keypairs.len()));
-                },
+                }
                 WalletMessage::Send => {
                     let to_address = Address::from_str(&input_1.value().as_str())?;
                     let tx_object = create_txn_object(to_address, 69)?;
