@@ -16,6 +16,8 @@ use web3::types::Address;
 mod wallet_lib;
 use crate::wallet_lib::{create_keypair, create_txn_object, sign_and_send};
 
+// ropsten ETH for practice
+// https://faucet.dimensions.network/ for adding Ropsten-ETH to wallet
 const URL: &str = "https://eth-ropsten.alchemyapi.io/v2/KCNPR0famYesyHVy345ynShLVIr9Eaf4";
 
 #[derive(Debug, Clone)]
